@@ -42,6 +42,7 @@ function extractAgentName(ctx: any): string {
 const plugin = {
   id: "clawmo-push",
   name: "ClawMo Push",
+  version: "0.1.1",
   description: "APNs push notifications for ClawMo iOS client",
 
   register(api: PluginApi) {
@@ -100,6 +101,7 @@ const plugin = {
       try {
         const healthy = await relay.healthCheck();
         respond(true, {
+          version: plugin.version,
           relayUrl: config.relayUrl,
           relayHealthy: healthy,
           registeredDevices: store.getDeviceCount(),
@@ -117,6 +119,7 @@ const plugin = {
       handler: async (_req, res) => {
         const healthy = await relay.healthCheck();
         const body = JSON.stringify({
+          version: plugin.version,
           relayUrl: config.relayUrl,
           relayHealthy: healthy,
           registeredDevices: store.getDeviceCount(),

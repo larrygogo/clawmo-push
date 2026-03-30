@@ -58,21 +58,26 @@ const plugin = {
     const limiter = new RateLimiter(config.cooldownSeconds ?? 60);
     const maxBody = config.maxBodyLength ?? 100;
 
-    // 定期清理限频记录
-    setInterval(() => limiter.cleanup(), 3600_000);
+    // 定期清理限频记录 & 过期设备
+    setInterval(() => {
+      limiter.cleanup();
+      const purged = store.purgeExpired();
+      if (purged > 0) log.info(`[clawmo-push] 已清理 ${purged} 个过期设备`);
+    }, 3600_000);
 
     log.info(`[clawmo-push] 已启动，relay=${config.relayUrl}，已注册设备=${store.getDeviceCount()}`);
 
     // --- Gateway RPC: 注册 device token ---
     api.registerGatewayMethod("clawmo-push.register", ({ params, respond }: any) => {
       try {
-        const { token, platform, appVersion } = params;
+        const { token, platform, appVersion, ttl } = params;
         if (!token || typeof token !== "string") {
           respond(false, null, { code: "invalid_params", message: "token is required" });
           return;
         }
-        store.register(token, platform ?? "unknown", appVersion ?? "unknown");
-        log.info(`[clawmo-push] 设备注册: ${token.slice(0, 8)}... (${platform})`);
+        const ttlSeconds = typeof ttl === "number" && ttl > 0 ? ttl : undefined;
+        store.register(token, platform ?? "unknown", appVersion ?? "unknown", ttlSeconds);
+        log.info(`[clawmo-push] 设备注册: ${token.slice(0, 8)}... (${platform}, ttl=${ttlSeconds ?? "forever"})`);
         respond(true, { registered: true, deviceCount: store.getDeviceCount() });
       } catch (err: any) {
         respond(false, null, { code: "register_failed", message: err.message });

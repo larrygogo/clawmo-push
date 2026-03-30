@@ -8,7 +8,7 @@
       "relayUrl": {
         "type": "string",
         "description": "clawmo-relay 中继服务地址",
-        "default": "https://push.clawmo.app"
+        "default": "https://push.clawmo.cn"
       },
       "relayKey": {
         "type": "string",

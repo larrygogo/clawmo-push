@@ -15,21 +15,52 @@ ClawMo iOS ──ws──▶ OpenClaw Gateway ──agent_end──▶ clawmo-pu
 
 ## Install
 
-One-liner (download + install latest release):
+### 1. 安装插件
+
+一键安装（下载最新 release 并安装）：
 
 ```bash
-curl -sL $(curl -s https://api.github.com/repos/larrygogo/clawmo-push/releases/latest | grep browser_download_url | cut -d '"' -f 4) -o /tmp/clawmo-push.tgz && openclaw plugins install /tmp/clawmo-push.tgz
+curl -sL $(curl -s https://api.github.com/repos/larrygogo/clawmo-push/releases/latest \
+  | grep browser_download_url | cut -d '"' -f 4) \
+  -o /tmp/clawmo-push.tgz \
+  && openclaw plugins install /tmp/clawmo-push.tgz
 ```
 
-Or manually: download `.tgz` from [Releases](https://github.com/larrygogo/clawmo-push/releases), then:
+或手动下载 `.tgz` 从 [Releases](https://github.com/larrygogo/clawmo-push/releases)，然后：
 
 ```bash
-openclaw plugins install ./clawmo-push-v0.1.0.tgz
+openclaw plugins install ./clawmo-push-v0.1.1.tgz
+```
+
+### 2. 配置插件
+
+安装后编辑 `~/.openclaw/openclaw.json`，在 `plugins.entries` 中添加：
+
+```json
+{
+  "plugins": {
+    "entries": {
+      "clawmo-push": {
+        "enabled": true,
+        "config": {
+          "relayUrl": "https://push.clawmo.cn",
+          "relayKey": "your-relay-api-key"
+        }
+      }
+    }
+  }
+}
+```
+
+### 3. 重启 Gateway
+
+```bash
+openclaw gateway restart
 ```
 
 ## Configuration
 
-After installation, configure the plugin in your Gateway settings:
+配置项：
 
 | Field | Required | Default | Description |
 |-------|----------|---------|-------------|

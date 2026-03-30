@@ -42,7 +42,7 @@ function extractAgentName(ctx: any): string {
 const plugin = {
   id: "clawmo-push",
   name: "ClawMo Push",
-  version: "0.1.1",
+  version: "0.1.2",
   description: "APNs push notifications for ClawMo iOS client",
 
   register(api: PluginApi) {

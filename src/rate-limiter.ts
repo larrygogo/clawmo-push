@@ -1,0 +1,26 @@
+export class RateLimiter {
+  private lastPushTime = new Map<string, number>();
+  private cooldownMs: number;
+
+  constructor(cooldownSeconds: number) {
+    this.cooldownMs = cooldownSeconds * 1000;
+  }
+
+  canPush(sessionKey: string): boolean {
+    const now = Date.now();
+    const last = this.lastPushTime.get(sessionKey) ?? 0;
+    return now - last >= this.cooldownMs;
+  }
+
+  record(sessionKey: string): void {
+    this.lastPushTime.set(sessionKey, Date.now());
+  }
+
+  /** 清理超过 1 小时的旧记录 */
+  cleanup(): void {
+    const cutoff = Date.now() - 3600_000;
+    for (const [key, time] of this.lastPushTime) {
+      if (time < cutoff) this.lastPushTime.delete(key);
+    }
+  }
+}

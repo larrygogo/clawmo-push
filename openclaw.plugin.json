@@ -1,0 +1,30 @@
+{
+  "id": "clawmo-push",
+  "name": "ClawMo Push",
+  "description": "监听 Agent 消息，通过 clawmo-relay 发送 APNs 推送通知到 ClawMo iOS 客户端",
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "relayUrl": {
+        "type": "string",
+        "description": "clawmo-relay 中继服务地址",
+        "default": "https://push.clawmo.app"
+      },
+      "relayKey": {
+        "type": "string",
+        "description": "中继服务 API Key"
+      },
+      "cooldownSeconds": {
+        "type": "number",
+        "description": "同一会话推送冷却时间（秒）",
+        "default": 60
+      },
+      "maxBodyLength": {
+        "type": "number",
+        "description": "推送正文最大字符数",
+        "default": 100
+      }
+    },
+    "required": ["relayUrl", "relayKey"]
+  }
+}

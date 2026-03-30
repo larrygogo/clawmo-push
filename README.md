@@ -15,7 +15,13 @@ ClawMo iOS ──ws──▶ OpenClaw Gateway ──agent_end──▶ clawmo-pu
 
 ## Install
 
-Download the latest `.tgz` from [Releases](https://github.com/larrygogo/clawmo-push/releases), then:
+One-liner (download + install latest release):
+
+```bash
+curl -sL $(curl -s https://api.github.com/repos/larrygogo/clawmo-push/releases/latest | grep browser_download_url | cut -d '"' -f 4) -o /tmp/clawmo-push.tgz && openclaw plugins install /tmp/clawmo-push.tgz
+```
+
+Or manually: download `.tgz` from [Releases](https://github.com/larrygogo/clawmo-push/releases), then:
 
 ```bash
 openclaw plugins install ./clawmo-push-v0.1.0.tgz
